@@ -1,8 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @font-face {
   font-family: "alliance";
-  src: url("../public/fonts/alliance.ttf");
+  src: url("../fonts/alliance.ttf");
+}
+
+html {
+  background-color: #000;
 }

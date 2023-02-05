@@ -5,6 +5,8 @@ import { Formik, Form } from "formik";
 
 import { TextField, Autocomplete, Button } from "@mui/material";
 import { TradesTable } from "./components/Table";
+import { Layout } from "./components/atoms/template/Layout";
+import Title from "./components/atoms/typography/Title";
 
 const App = () => {
   const [ticker, setTicker] = useState("");
@@ -65,66 +67,88 @@ const App = () => {
       textColor: textColor,
     });
     setRecentTrades(recentTrades.data);
-
-    console.log("recentTrades", recentTrades.data);
-    console.log("ticker_24h", ticker_24h.data);
-    console.log("ticker", ticker.data);
   };
 
   const submit = ({ pairs }: string) => {
     getPairData(pairs);
   };
 
+  const style = {
+    "& label.Mui-focused": {
+      color: "#b053ab",
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#b053ab",
+      },
+    },
+  };
+
   return (
     <>
-      {error && <p>Something went wrong...</p>}
-      <div className="font-alliance m-6">{isLoading && <p>Fetching</p>}</div>
-      <div>
-        <Formik initialValues={initialValues} onSubmit={submit}>
-          {({ handleChange, values, setFieldValue }) => (
-            <Form>
-              <Autocomplete
-                disablePortal
-                id="pairs"
-                options={currencyPairs}
-                value={values.pair}
-                onChange={(e, value) => {
-                  console.log(value);
-                  setFieldValue(
-                    "pairs",
-                    value !== null ? value : initialValues.pairs
-                  );
-                }}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Please select a currency pair"
-                  />
-                )}
-              />
-              <Button
-                className="bg-pink"
-                variant="contained"
-                color="primary"
-                type="submit"
-              >
-                Fetch data for this pair
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </div>
+      <Layout>
+        <div>
+          <Title>Flowdesk's public market data</Title>
+          {error ? (
+            <p>Something went wrong...</p>
+          ) : (
+            <>
+              <div className="mt-8 flex justify-center">
+                <Formik initialValues={initialValues} onSubmit={submit}>
+                  {({ values, setFieldValue }) => (
+                    <Form className="flex flex-col justify-center">
+                      <Autocomplete
+                        disablePortal
+                        id="pairs"
+                        options={currencyPairs}
+                        value={values.pair}
+                        className="bg-white font-sans focus-within:border-purple focus:outline-purple active:outline-purple"
+                        onChange={(e, value) => {
+                          setFieldValue(
+                            "pairs",
+                            value !== null ? value : initialValues.pairs
+                          );
+                        }}
+                        sx={{ width: 300 }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            sx={style}
+                            label={
+                              isLoading
+                                ? "Data is loading"
+                                : "Please select a currency pair"
+                            }
+                            className="bg-white font-sans focus-within:border-purple active:border-purple"
+                          />
+                        )}
+                      />
+                      <Button
+                        className="bg-purple hover:bg-pink mt-4 font-sans"
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                      >
+                        Get data for this pair
+                      </Button>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
 
-      <div>
-        {ticker && <p>{ticker}</p>}
-        {ticker_24h && (
-          <p className={`${ticker_24h.textColor}`}>{ticker_24h.price}</p>
-        )}
-        {recentTrades.length && (
-          <TradesTable trades={recentTrades}></TradesTable>
-        )}
-      </div>
+              <div>
+                {ticker && <p>{ticker}</p>}
+                {ticker_24h && (
+                  <p className={`${ticker_24h.textColor}`}>
+                    {ticker_24h.price}
+                  </p>
+                )}
+                {!!recentTrades.length && <TradesTable trades={recentTrades} />}
+              </div>
+            </>
+          )}
+        </div>
+      </Layout>
     </>
   );
 };

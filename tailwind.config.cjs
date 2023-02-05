@@ -16,6 +16,7 @@ module.exports = {
       text_gray: "#cccccc",
       red: "#F08080",
       ticker_green: "#008000",
+      white: "#fff",
     },
     fontFamily: {
       sans: ["alliance", "sans-serif"],
