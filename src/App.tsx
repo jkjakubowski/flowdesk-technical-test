@@ -1,12 +1,13 @@
 import { useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useQuery } from "react-query";
 import { Formik, Form } from "formik";
 
 import { TextField, Autocomplete, Button } from "@mui/material";
-import { TradesTable } from "./components/Table";
+import { TradesTable } from "./components/molecules/table/Table";
 import { Layout } from "./components/atoms/template/Layout";
 import Title from "./components/atoms/typography/Title";
+import Ticker from "./components/atoms/typography/Ticker";
 
 const App = () => {
   const [ticker, setTicker] = useState("");
@@ -90,7 +91,7 @@ const App = () => {
         <div>
           <Title>Flowdesk's public market data</Title>
           {error ? (
-            <p>Something went wrong...</p>
+            <p className="text-pink">Something went wrong...</p>
           ) : (
             <>
               <div className="mt-8 flex justify-center">
@@ -99,6 +100,7 @@ const App = () => {
                     <Form className="flex flex-col justify-center">
                       <Autocomplete
                         disablePortal
+                        disabled={isLoading}
                         id="pairs"
                         options={currencyPairs}
                         value={values.pair}
@@ -119,7 +121,7 @@ const App = () => {
                                 ? "Data is loading"
                                 : "Please select a currency pair"
                             }
-                            className="bg-white font-sans focus-within:border-purple active:border-purple"
+                            className="bg-white font-sans"
                           />
                         )}
                       />
@@ -137,11 +139,13 @@ const App = () => {
               </div>
 
               <div>
-                {ticker && <p>{ticker}</p>}
+                {ticker && (
+                  <Ticker color="text-white">{`Current price: ${ticker}`}</Ticker>
+                )}
                 {ticker_24h && (
-                  <p className={`${ticker_24h.textColor}`}>
-                    {ticker_24h.price}
-                  </p>
+                  <Ticker color={`${ticker_24h.textColor}`}>
+                    {`Last 24h variations: ${ticker_24h.price}`}
+                  </Ticker>
                 )}
                 {!!recentTrades.length && <TradesTable trades={recentTrades} />}
               </div>
