@@ -8,7 +8,10 @@ import { TradesTable } from "./components/Table";
 
 const App = () => {
   const [ticker, setTicker] = useState("");
-  const [ticker_24h, setTicker_24h] = useState("");
+  const [ticker_24h, setTicker_24h] = useState({
+    price: "",
+    textColor: "",
+  });
   const [recentTrades, setRecentTrades] = useState([]);
 
   const { isLoading, error, data } = useQuery(
@@ -48,8 +51,19 @@ const App = () => {
       }
     );
 
-    setTicker(ticker.data);
-    setTicker_24h(ticker_24h.data);
+    let textColor;
+
+    if (ticker_24h.data.priceChangePercent.includes("-")) {
+      textColor = "text-red";
+    } else {
+      textColor = "text-green";
+    }
+
+    setTicker(ticker.data.price);
+    setTicker_24h({
+      price: ticker_24h.data.priceChangePercent,
+      textColor: textColor,
+    });
     setRecentTrades(recentTrades.data);
 
     console.log("recentTrades", recentTrades.data);
@@ -103,6 +117,10 @@ const App = () => {
       </div>
 
       <div>
+        {ticker && <p>{ticker}</p>}
+        {ticker_24h && (
+          <p className={`${ticker_24h.textColor}`}>{ticker_24h.price}</p>
+        )}
         {recentTrades.length && (
           <TradesTable trades={recentTrades}></TradesTable>
         )}
