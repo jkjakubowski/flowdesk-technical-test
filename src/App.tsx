@@ -142,7 +142,7 @@ const App = () => {
                 {ticker && (
                   <Ticker color="text-white">{`Current price: ${ticker}`}</Ticker>
                 )}
-                {ticker_24h && (
+                {ticker_24h.price.length > 0 && (
                   <Ticker color={`${ticker_24h.textColor}`}>
                     {`Last 24h variations: ${ticker_24h.price}`}
                   </Ticker>
