@@ -70,8 +70,8 @@ const App = () => {
     setRecentTrades(recentTrades.data);
   };
 
-  const submit = ({ pairs }: string) => {
-    getPairData(pairs);
+  const submit = ({ pair }: any) => {
+    getPairData(pair);
   };
 
   const style = {
@@ -101,13 +101,13 @@ const App = () => {
                       <Autocomplete
                         disablePortal
                         disabled={isLoading}
-                        id="pairs"
+                        id="pair"
                         options={currencyPairs}
-                        value={values.pair}
+                        value={values.pairs}
                         className="bg-white font-sans focus-within:border-purple focus:outline-purple active:outline-purple"
                         onChange={(e, value) => {
                           setFieldValue(
-                            "pairs",
+                            "pair",
                             value !== null ? value : initialValues.pairs
                           );
                         }}

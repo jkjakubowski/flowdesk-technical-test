@@ -15,10 +15,7 @@ type HeadCell = {
 };
 
 type TableProps = {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof TradesData
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: any) => void;
   order: Order;
   orderBy: string;
 };

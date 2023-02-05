@@ -19,7 +19,7 @@ const TableHeadCells = (props: TableProps) => {
   const { order, orderBy, onRequestSort } = props;
 
   const createSortHandler =
-    (property: keyof TradeData) => (event: React.MouseEvent<unknown>) => {
+    (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
